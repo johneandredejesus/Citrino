@@ -1,11 +1,8 @@
 from datatype import TypeDef
-from datadefinition import(OperationEnum,
-                           Cfg,
-                           Oper,
-                           Act,
-                           OpenConfig)
-from xml.etree.ElementTree import(tostring, Element, SubElement)
+from datadefinition import Cfg
+from xml.etree.ElementTree import SubElement
 from methods import convert_to_string, is_not_none, force_type
+                    
                     
 class RouterStaticCfg(Cfg):
 

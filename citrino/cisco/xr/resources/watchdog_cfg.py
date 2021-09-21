@@ -1,9 +1,9 @@
-from datadefinition import OperationEnum, Cfg, Oper
+from datadefinition import OperationEnum, Cfg
 from xml.etree.ElementTree import SubElement
 from methods import convert_to_string, is_not_none, force_type
 
 
-class  ThresholdMemoryCfg(Cfg):
+class  ThresholdMemory(Cfg):
     
     @force_type
     def __init__(self, minor: int = None, severe: int = None, critical: int = None, operation: OperationEnum.Operation = None):
@@ -37,9 +37,7 @@ class  ThresholdMemoryCfg(Cfg):
         if is_not_none(operation):
             self.set('xc:operation', operation.value)
         
-
-
-class  DiskLimitCfg(Cfg):
+class  DiskLimit(Cfg):
     
     @force_type
     def __init__(self, minor: int = None, severe: int = None, critical: int = None, operation: OperationEnum.Operation = None):
@@ -89,7 +87,7 @@ class WatchdBaseCfg(Cfg):
 class WatchdogCfg(WatchdBaseCfg):
     
     @force_type
-    def __init__(self, threshold_memory: ThresholdMemoryCfg = None, disk_limit: DiskLimitCfg = None):
+    def __init__(self, threshold_memory: ThresholdMemory = None, disk_limit: DiskLimit = None):
         """
         module: Cisco-IOS-XR-watchd-cfg.
 
@@ -186,7 +184,7 @@ class WatchdCfg(WatchdBaseCfg):
             timeout_.set('xc:operation', operation.value)
 
 
-class DiskThresholdCfg(Cfg):
+class DiskThreshold(Cfg):
     
     @force_type
     def __init__(self, minor: int = None, severe: int = None, critical: int = None, operation: OperationEnum.Operation = None):
@@ -221,7 +219,7 @@ class DiskThresholdCfg(Cfg):
             self.set('xc:operation', operation.value)
            
 
-class MemoryThresholdCfg(Cfg):
+class MemoryThreshold(Cfg):
     
     @force_type
     def __init__(self, minor: int = None, severe: int = None, critical: int = None, operation: OperationEnum.Operation = None):
@@ -256,10 +254,10 @@ class MemoryThresholdCfg(Cfg):
             self.set('xc:operation', operation.value)
         
 
-class WatchdogNodeThresholdCfg(WatchdBaseCfg):
+class WatchdogNodeThreshold(WatchdBaseCfg):
     
     @force_type
-    def __init__(self, disk_threshold: DiskThresholdCfg = None, memory_threshold: MemoryThresholdCfg = None):
+    def __init__(self, disk_threshold: DiskThreshold = None, memory_threshold: MemoryThreshold = None):
         """"watchdog node threshold."""
 
         super().__init__('watchd-cfg:watchdog-node-threshold')
@@ -281,10 +279,10 @@ class NodesBaseCfg(Cfg):
         self.set('xmlns:config-mda-cfg', 'http://cisco.com/ns/yang/Cisco-IOS-XR-config-mda-cfg')
 
 
-class  ActiveNodeCfg(Cfg):
+class  ActiveNode(Cfg):
     
     @force_type
-    def __init__(self, node_name: str, watchdog_node_threshold: WatchdogNodeThresholdCfg = None):
+    def __init__(self, node_name: str, watchdog_node_threshold: WatchdogNodeThreshold = None):
         """
         Per-node configuration for active nodes.
 
@@ -310,17 +308,17 @@ class ActiveNodesCfg(NodesBaseCfg):
         super().__init__('config-mda-cfg:active-nodes')
 
     @force_type
-    def active_node(self, value: ActiveNodeCfg):
+    def active_node(self, value: ActiveNode):
         """The configuration for an active node."""
 
         if is_not_none(value):
             self.append(value)
 
 
-class PreconfiguredNodeCfg(Cfg):
+class PreconfiguredNode(Cfg):
     
     @force_type
-    def __init__(self, node_name: str, watchdog_node_threshold: WatchdogNodeThresholdCfg = None):
+    def __init__(self, node_name: str, watchdog_node_threshold: WatchdogNodeThreshold = None):
         """
         The configuration for a non-active node.
 
@@ -346,134 +344,8 @@ class PreconfiguredNodesCfg(NodesBaseCfg):
         super().__init__('config-mda-cfg:preconfigured-nodes')
     
     @force_type
-    def preconfigured_node(self, value: PreconfiguredNodeCfg):
+    def preconfigured_node(self, value: PreconfiguredNode):
         """The configuration for a non-active node."""
 
         if is_not_none(value):
             self.append(value)
-
-class CurrentThrottleOper(Oper):
-
-    def __init__(self):
-        """Current throttle details."""
-
-        super().__init__('wd-oper:current-throttle')
-
-class OverloadStateOper(Oper):
-    
-    @force_type
-    def __init__(self, current_throttle: CurrentThrottleOper = None):
-        """Display overload control state."""
-
-        super().__init__('wd-oper:overload-state')
-
-        if is_not_none(current_throttle):
-            self.append(current_throttle)
-
-class MemoryStateOper(Oper):
-
-    def __init__(self):
-        """Memory state."""
-
-        super().__init__('wd-oper:memory-state')
-
-class ConfiguredOper(Oper):
-
-    def __init__(self):
-        """Memory configured by user."""
-
-        super().__init__('wd-oper:configured')
-
-class MemoryOper(Oper):
-
-    def __init__(self):
-        """Memory information."""
-
-        super().__init__('wd-oper:memory')
-
-class ConfiguredMemoryOper(Oper):
-
-    def __init__(self):
-        """Configured memory."""
-
-        super().__init__('wd-oper:configured-memory')
-
-class DefaultOper(Oper):
-    
-    @force_type
-    def __init__(self, configured_memory: ConfiguredMemoryOper = None, memory: MemoryOper = None):
-        """System default memory."""
-
-        super().__init__('wd-oper:default')
-
-        if is_not_none(configured_memory):
-            self.append(configured_memory)
-        
-        if is_not_none(memory):
-            self.append(memory)
-        
-class ThresholdMemoryOper(Oper):
-    
-    @force_type
-    def __init__(self, default: DefaultOper = None, configured: ConfiguredOper = None):
-        """Threshold memory."""
-
-        super().__init__('wd-oper:threshold-memory')
-
-        if is_not_none(default):
-            self.append(default)
-        
-        if is_not_none(configured):
-            self.append(configured)
-
-class NodeOper(Oper):
-    
-    @force_type
-    def __init__(self, node_name: str, threshold_memory: ThresholdMemoryOper = None, 
-                       memory_state: MemoryStateOper= None, overload_state: OverloadStateOper = None):
-        """node_name: str. Node ID."""
-
-        super().__init__('wd-oper:node')
-
-        if is_not_none(node_name):
-            node_name_ = SubElement(self, 'wd-oper:node-name')
-            node_name_.text = node_name
-        
-        if is_not_none(threshold_memory):
-            self.append(threshold_memory)
-        
-        if is_not_none(memory_state):
-            self.append(memory_state)
-
-        if is_not_none(overload_state):
-            self.append(overload_state)
-        
-class NodesOper(Oper):
-
-    def __init__(self):
-        """List of nodes."""
-
-        super().__init__('wd-oper:nodes')
-    
-    @force_type
-    def node(self, value: NodeOper):
-        
-        if is_not_none(value):
-            self.append(value)
-
-class WatchdogOper(Oper):
-    
-    @force_type
-    def __init__(self, nodes: NodesOper = None):
-        """"
-        module: Cisco-IOS-XR-wd-oper
-        
-        Watchdog information.
-        """
-        
-        super().__init__('wd-oper:watchdog')
-
-        self.set('xmlns:wd-oper', 'http://cisco.com/ns/yang/Cisco-IOS-XR-wd-oper')
-
-        if is_not_none(nodes):
-            self.append(nodes)

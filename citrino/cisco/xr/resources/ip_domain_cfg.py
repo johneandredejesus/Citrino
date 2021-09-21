@@ -3,7 +3,7 @@ from xml.etree.ElementTree import SubElement
 from methods import convert_to_string, is_not_none, force_type
 
 
-class IPV4HostCfg(Cfg):
+class IPV4Host(Cfg):
     
     @force_type
     def __init__(self, host_name: str, operation: OperationEnum.Operation = None):
@@ -42,7 +42,7 @@ class IPV4HostCfg(Cfg):
         if is_not_none(operation):
             address_.set('xc:operation', operation.value)
 
-class  IPV4HostsCfg(Cfg):
+class  IPV4Hosts(Cfg):
     
     @force_type
     def __init__(self):
@@ -51,12 +51,12 @@ class  IPV4HostsCfg(Cfg):
         super().__init__('ip-domain-cfg:ipv4-hosts')
     
     @force_type
-    def ipv4_host(self, value: IPV4HostCfg):
+    def ipv4_host(self, value: IPV4Host):
 
         if is_not_none(value):
             self.append(value)
 
-class ListCfg(Cfg):
+class List(Cfg):
     
     @force_type
     def __init__(self, order: int, list_name: str, operation: OperationEnum.Operation = None):
@@ -81,7 +81,7 @@ class ListCfg(Cfg):
         if is_not_none(operation):
             self.set('xc:operation', operation.value)
 
-class ListsCfg(Cfg):
+class Lists(Cfg):
     
     @force_type
     def __init__(self):
@@ -90,12 +90,12 @@ class ListsCfg(Cfg):
         super().__init__('ip-domain-cfg:lists')
     
     @force_type
-    def list(self, list_: ListCfg):
+    def list(self, list_: List):
 
         if is_not_none(list_):
             self.append(list_)
 
-class ServerCfg(Cfg):
+class Server(Cfg):
     
     @force_type
     def __init__(self, order: int, server_address: str, operation: OperationEnum.Operation = None):
@@ -120,7 +120,7 @@ class ServerCfg(Cfg):
         if is_not_none(operation):
             self.set('xc:operation', operation.value)
 
-class ServersCfg(Cfg):
+class Servers(Cfg):
 
     def __init__(self):
         """Name server addresses."""
@@ -128,12 +128,12 @@ class ServersCfg(Cfg):
         super().__init__('ip-domain-cfg:servers')
     
     @force_type
-    def server(self, value: ServerCfg):
+    def server(self, value: Server):
 
         if is_not_none(value):
             self.append(value)
 
-class IPV6HostCfg(Cfg):
+class IPV6Host(Cfg):
     
     @force_type
     def __init__(self, host_name: str, operation: OperationEnum.Operation = None):
@@ -172,7 +172,7 @@ class IPV6HostCfg(Cfg):
         if is_not_none(operation):
             address_.set('xc:operation', operation.value)
 
-class  IPV6HostsCfg(Cfg):
+class  IPV6Hosts(Cfg):
 
     def __init__(self):
         """IPv6 host."""
@@ -180,26 +180,26 @@ class  IPV6HostsCfg(Cfg):
         super().__init__('ip-domain-cfg:ipv6-hosts')
     
     @force_type
-    def ipv6_host(self, value: IPV6HostCfg):
+    def ipv6_host(self, value: IPV6Host):
         
         if is_not_none(value):
             self.append(value)
 
-class VRFCfg(Cfg):
+class VRF(Cfg):
     
     @force_type
-    def __init__(self, vrf_name: str, ipv6_hosts: IPV6HostsCfg = None, servers: ServersCfg = None,
-                       lists: ListsCfg = None, ipv4_hosts: IPV4HostsCfg = None, operation: OperationEnum.Operation = None):
+    def __init__(self, vrf_name: str, ipv6_hosts: IPV6Hosts = None, servers: Servers = None,
+                       lists: Lists = None, ipv4_hosts: IPV4Hosts = None, operation: OperationEnum.Operation = None):
         """
         vrf_name: str. VRF specific data. Name of the VRF instance.
         
-        ipv6_hosts: IPV6HostsCfg. IPv6 host.
+        ipv6_hosts: IPV6Hosts. IPv6 host.
 
-        servers: ServersCfg. Name server addresses.
+        servers: Servers. Name server addresses.
 
-        lists: ListsCfg. Domain names to complete unqualified host names.
+        lists: Lists. Domain names to complete unqualified host names.
         
-        ipv4_hosts: IPV4HostsCfg. Host name and up to 8 host IPv4 addresses.
+        ipv4_hosts: IPV4Hosts. Host name and up to 8 host IPv4 addresses.
         """
 
         super().__init__('ip-domain-cfg:vrf')
@@ -280,7 +280,7 @@ class VRFCfg(Cfg):
         if is_not_none(operation):
             name_.set('xc:operation', operation.value)
             
-class VRFSCfg(Cfg):
+class VRFS(Cfg):
 
     def __init__(self):
         """VRF table."""
@@ -288,7 +288,7 @@ class VRFSCfg(Cfg):
         super().__init__('ip-domain-cfg:vrfs')
     
     @force_type
-    def vrf(self, value: VRFCfg):
+    def vrf(self, value: VRF):
         
         if is_not_none(value):
             self.append(value)
@@ -296,7 +296,7 @@ class VRFSCfg(Cfg):
 class IPDomainCfg(Cfg):
     
     @force_type
-    def __init__(self, vrfs: VRFSCfg = None):
+    def __init__(self, vrfs: VRFS = None):
         """IP domain configuration."""
 
         super().__init__('ip-domain-cfg:ip-domain')

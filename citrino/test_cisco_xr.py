@@ -2,7 +2,7 @@ from unittest import TestCase, main
 from manager import Citrino
 from datadefinition import OperationEnum
 from test_credential import Credential  # For testing remove this.
-from cisco.xr.resources.interface import (InterfaceConfigurationsCfg,
+from cisco.xr.resources.interface_cfg import (InterfaceConfigurationsCfg,
                                           BGPPAInput,
                                           BGPPAOutput,
                                           BGPQPPB,
@@ -34,23 +34,24 @@ from cisco.xr.resources.interface import (InterfaceConfigurationsCfg,
                                           InterfaceModeEnum,
                                           SecondaryAdminStateEnum,
                                           ArgsDampeningEnum,
-                                          OpenConfigInterfaces,
-                                          InterfaceOpenConfig,
-                                          SubinterfacesOpenConfig,
-                                          SubinterfaceOpenConfig,
                                           InterfaceConfiguration,
                                           HelperAddresses,
                                           MTUs,
                                           BGPPolicyAccountings)
-from cisco.xr.resources.ping import PingAct
-from cisco.xr.resources.traceroute import TracerouteAct
-from cisco.xr.resources.esacl import (EsAclCfg, 
+from cisco.xr.resources.interface_open_config import (
+                                          OpenConfigInterfaces,
+                                          InterfaceOpenConfig,
+                                          SubinterfacesOpenConfig,
+                                          SubinterfaceOpenConfig)
+from cisco.xr.resources.ping_act import PingAct
+from cisco.xr.resources.traceroute_act import TracerouteAct
+from cisco.xr.resources.esacl_cfg import (EsAclCfg, 
                                       AccessesEsAcl, 
                                       AccessEsAcl, 
                                       AccessListEntriesEsAcl, 
                                       AccessListEntryEsAcl, 
                                       GrantEsAclEnum)
-from cisco.xr.resources.ipv4_acl import (IPV4AclAndPrefixListCfg,
+from cisco.xr.resources.ipv4_acl_cfg import (IPV4AclAndPrefixListCfg,
                                         IPV4AclLogUpdate,
                                         IPV4AclPrefixes,
                                         IPV4AclPrefix,
@@ -74,11 +75,11 @@ from cisco.xr.resources.ipv4_acl import (IPV4AclAndPrefixListCfg,
                                         IPV4AclProtocolNumber,
                                         IPV4AclOperatorEnum,
                                         IPV4AclGrantEnum)
-from cisco.xr.resources.shellutil import (HostNamesCfg, 
-                                          SystemTimeOper, 
+from cisco.xr.resources.shellutil_cfg import HostNamesCfg 
+from cisco.xr.resources.shellutil_oper import (SystemTimeOper, 
                                           Clock, 
                                           Uptime)
-from cisco.xr.resources.diag import (DiagOper, 
+from cisco.xr.resources.diag_oper import (DiagOper, 
                                     Racks, 
                                     Rack, 
                                     PowerShelfs, 
@@ -92,40 +93,40 @@ from cisco.xr.resources.diag import (DiagOper,
                                     Chassis,
                                     PowerSupplies,
                                     PowerSupply)
-from cisco.xr.resources.hwmod_mpa_reload import HwmodMPAReload
-from cisco.xr.resources.watchdog import (WatchdogCfg, 
+from cisco.xr.resources.hwmod_mpa_reload_act import HwmodMPAReload
+from cisco.xr.resources.watchdog_cfg import (WatchdogCfg, 
                                          WatchdCfg, 
                                          ActiveNodesCfg, 
-                                         ActiveNodeCfg, 
+                                         ActiveNode, 
                                          PreconfiguredNodesCfg, 
-                                         PreconfiguredNodeCfg, 
-                                         WatchdogNodeThresholdCfg, 
-                                         DiskThresholdCfg, 
-                                         MemoryThresholdCfg,
-                                         ThresholdMemoryCfg,
-                                         DiskLimitCfg,
-                                         WatchdogOper,
-                                         NodesOper,
-                                         NodeOper,
-                                         ThresholdMemoryOper,
-                                         DefaultOper,
-                                         ConfiguredMemoryOper,
-                                         MemoryOper,
-                                         ConfiguredOper,
-                                         MemoryStateOper,
-                                         OverloadStateOper,
-                                         CurrentThrottleOper)
-from cisco.xr.resources.ip_domain import (IPDomainCfg, 
-                                          VRFSCfg,
-                                          VRFCfg,
-                                          IPV6HostsCfg,
-                                          IPV6HostCfg,
-                                          ServersCfg,
-                                          ServerCfg,
-                                          ListsCfg,
-                                          ListCfg,
-                                          IPV4HostsCfg,
-                                          IPV4HostCfg)
+                                         PreconfiguredNode, 
+                                         WatchdogNodeThreshold, 
+                                         DiskThreshold, 
+                                         MemoryThreshold,
+                                         ThresholdMemory as ThresholdMemoryCfg,
+                                         DiskLimit)
+from cisco.xr.resources.watchdog_oper import (WatchdogOper,
+                                         Nodes,
+                                         Node,
+                                         ThresholdMemory,
+                                         Default,
+                                         ConfiguredMemory,
+                                         Memory,
+                                         Configured,
+                                         MemoryState,
+                                         OverloadState,
+                                         CurrentThrottle)
+from cisco.xr.resources.ip_domain_cfg import (IPDomainCfg, 
+                                          VRFS,
+                                          VRF,
+                                          IPV6Hosts,
+                                          IPV6Host,
+                                          Servers,
+                                          Server,
+                                          Lists,
+                                          List,
+                                          IPV4Hosts,
+                                          IPV4Host)
 
 class CiscoXRTest(TestCase):
 
@@ -497,13 +498,13 @@ class CiscoXRTest(TestCase):
 
         cfg = ActiveNodesCfg()
 
-        disk_threshold = DiskThresholdCfg(5, 4, 3)
+        disk_threshold = DiskThreshold(5, 4, 3)
         
-        memory_threshold = MemoryThresholdCfg(5, 4, 3)
+        memory_threshold = MemoryThreshold(5, 4, 3)
      
-        watchdog_node_threshold = WatchdogNodeThresholdCfg(disk_threshold, memory_threshold)
+        watchdog_node_threshold = WatchdogNodeThreshold(disk_threshold, memory_threshold)
 
-        active = ActiveNodeCfg('0/RP0/CPU0', watchdog_node_threshold)
+        active = ActiveNode('0/RP0/CPU0', watchdog_node_threshold)
 
         cfg.active_node(active)
         
@@ -513,13 +514,13 @@ class CiscoXRTest(TestCase):
 
         cfg = ActiveNodesCfg()
 
-        disk_threshold = DiskThresholdCfg()
+        disk_threshold = DiskThreshold()
         
-        memory_threshold = MemoryThresholdCfg()
+        memory_threshold = MemoryThreshold()
       
-        watchdog_node_threshold = WatchdogNodeThresholdCfg(disk_threshold, memory_threshold)
+        watchdog_node_threshold = WatchdogNodeThreshold(disk_threshold, memory_threshold)
 
-        active = ActiveNodeCfg('0/RP0/CPU0', watchdog_node_threshold)
+        active = ActiveNode('0/RP0/CPU0', watchdog_node_threshold)
 
         cfg.active_node(active)
          
@@ -529,13 +530,13 @@ class CiscoXRTest(TestCase):
 
         cfg = PreconfiguredNodesCfg()
 
-        disk_threshold = DiskThresholdCfg(5, 4, 3)
+        disk_threshold = DiskThreshold(5, 4, 3)
         
-        memory_threshold = MemoryThresholdCfg(5, 4, 3)
+        memory_threshold = MemoryThreshold(5, 4, 3)
        
-        watchdog_node_threshold = WatchdogNodeThresholdCfg(disk_threshold, memory_threshold)
+        watchdog_node_threshold = WatchdogNodeThreshold(disk_threshold, memory_threshold)
 
-        preconfigure = PreconfiguredNodeCfg('0/RP0/CPU0', watchdog_node_threshold)
+        preconfigure = PreconfiguredNode('0/RP0/CPU0', watchdog_node_threshold)
 
         cfg.preconfigured_node(preconfigure)
         
@@ -545,13 +546,13 @@ class CiscoXRTest(TestCase):
 
         cfg = PreconfiguredNodesCfg()
 
-        disk_threshold = DiskThresholdCfg()
+        disk_threshold = DiskThreshold()
         
-        memory_threshold = MemoryThresholdCfg()
+        memory_threshold = MemoryThreshold()
       
-        watchdog_node_threshold = WatchdogNodeThresholdCfg(disk_threshold, memory_threshold)
+        watchdog_node_threshold = WatchdogNodeThreshold(disk_threshold, memory_threshold)
 
-        preconfigure = PreconfiguredNodeCfg('0/RP0/CPU0', watchdog_node_threshold)
+        preconfigure = PreconfiguredNode('0/RP0/CPU0', watchdog_node_threshold)
 
         cfg.preconfigured_node(preconfigure)
         
@@ -560,7 +561,7 @@ class CiscoXRTest(TestCase):
     def test_set_watchdog_cfg(self):
         
         threshold_memory = ThresholdMemoryCfg(5, 4, 3)
-        disk_limit = DiskLimitCfg(5, 4, 3)
+        disk_limit = DiskLimit(5, 4, 3)
 
         cfg = WatchdogCfg(threshold_memory, disk_limit)
 
@@ -593,17 +594,17 @@ class CiscoXRTest(TestCase):
 
     def test_get_watchdog_oper(self):
         
-        nodes_oper = NodesOper()
+        nodes_oper = Nodes()
 
-        threshold_memory = ThresholdMemoryOper()
+        threshold_memory = ThresholdMemory()
 
-        memory_state = MemoryStateOper()
+        memory_state = MemoryState()
 
-        current_throttle = CurrentThrottleOper()
+        current_throttle = CurrentThrottle()
 
-        overload_state = OverloadStateOper(current_throttle=current_throttle)
+        overload_state = OverloadState(current_throttle=current_throttle)
 
-        node_oper = NodeOper(node_name='0/RP0/CPU0', threshold_memory=threshold_memory, 
+        node_oper = Node(node_name='0/RP0/CPU0', threshold_memory=threshold_memory, 
                              memory_state=memory_state, overload_state=overload_state)
 
         nodes_oper.node(node_oper)
@@ -614,11 +615,11 @@ class CiscoXRTest(TestCase):
 
     def test_set_ip_domain_cfg(self):
         
-        vrfs = VRFSCfg()
+        vrfs = VRFS()
         
-        ipv6_hosts = IPV6HostsCfg()
+        ipv6_hosts = IPV6Hosts()
         
-        ipv6_host = IPV6HostCfg('test')
+        ipv6_host = IPV6Host('test')
 
         ipv6_host.address('2001:fcbe::')
         ipv6_host.address('2001:fcfe::')
@@ -626,21 +627,21 @@ class CiscoXRTest(TestCase):
 
         ipv6_hosts.ipv6_host(ipv6_host)
         
-        servers = ServersCfg()
+        servers = Servers()
         
-        server = ServerCfg(1, '192.168.10.10')
+        server = Server(1, '192.168.10.10')
 
         servers.server(server)
         
-        lists = ListsCfg()
+        lists = Lists()
 
-        list_ = ListCfg(1, 'test')
+        list_ = List(1, 'test')
 
         lists.list(list_)
 
-        ipv4_hosts =  IPV4HostsCfg()
+        ipv4_hosts =  IPV4Hosts()
         
-        ipv4_host = IPV4HostCfg('test')
+        ipv4_host = IPV4Host('test')
 
         ipv4_host.address('192.168.20.20')
         ipv4_host.address('192.168.20.21')
@@ -648,7 +649,7 @@ class CiscoXRTest(TestCase):
 
         ipv4_hosts.ipv4_host(ipv4_host)
 
-        vrf = VRFCfg('default', ipv6_hosts=ipv6_hosts, servers=servers, lists=lists, ipv4_hosts=ipv4_hosts)
+        vrf = VRF('default', ipv6_hosts=ipv6_hosts, servers=servers, lists=lists, ipv4_hosts=ipv4_hosts)
 
         vrf.lookup()
         vrf.multicast_domain('test')
