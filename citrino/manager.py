@@ -7,12 +7,18 @@ from contract import Contract
 
 class Citrino():
 
-    def __init__(self):
-        '''NetConf connection  manager  wrapping.'''
+    def __init__(self, **kargs):
+        """NetConf connection  manager  wrapping."""
 
         self.__connected = False
         self.__session = None
         self.__intellisense = Intellisense()
+        self.__try_connect(**kargs)
+
+    def __try_connect(self, **kargs):
+        
+        if kargs.__len__() > 0:
+            self.connect(**kargs)
 
     def has_contract(self) -> bool:
 

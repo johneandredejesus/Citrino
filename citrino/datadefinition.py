@@ -49,3 +49,9 @@ class OpenConfig(Manipulator):
 
     def __init__(self, tag: str, *args: Any, **kwargs: Any):
         super().__init__(tag, *args, **kwargs)
+
+
+class ITEF(Manipulator):
+
+    def __init__(self, tag: str, *args: Any, **kwargs: Any):
+        super().__init__(tag, *args, **kwargs)

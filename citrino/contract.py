@@ -1,6 +1,6 @@
 from collections import OrderedDict
 from commands import Commad
-from datadefinition import Cfg, Oper, Act, OpenConfig
+from datadefinition import Cfg, Oper, Act, OpenConfig, ITEF
 from methods import is_operation
 
 
@@ -51,6 +51,11 @@ class Contract():
 
         return open_config
     
+    @is_operation(ITEF)
+    def get_ietf(self, ietf: ITEF):
+
+        return ietf
+
     def delete_config(self) -> None:
 
         pass
@@ -58,7 +63,7 @@ class Contract():
     def get_running_config(self) -> None:
     
         return None
-
+    
     def __del__(self):
 
         self.__command = None

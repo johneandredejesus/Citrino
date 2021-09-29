@@ -1,5 +1,5 @@
 from contract import Contract
-from datadefinition import Cfg, Oper, Act, OpenConfig
+from datadefinition import Cfg, ITEF, Oper, Act, OpenConfig
 from netconf import (contract_register,
                      get,
                      get_config,
@@ -42,6 +42,11 @@ class IOSXR(Contract):
     def get_open_config(self, open_config: OpenConfig):
 
         return super().get_open_config(open_config)
+    
+    @get()
+    def get_ietf(self, ietf: ITEF):
+
+        return super().get_ietf(ietf)
 
     @get_config(source='running')
     def get_running_config(self):

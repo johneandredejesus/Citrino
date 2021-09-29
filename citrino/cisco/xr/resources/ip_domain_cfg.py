@@ -1,4 +1,4 @@
-from datadefinition import OperationEnum, Cfg, Oper
+from datadefinition import OperationEnum, Cfg
 from xml.etree.ElementTree import SubElement
 from methods import convert_to_string, is_not_none, force_type
 
@@ -56,6 +56,7 @@ class  IPV4Hosts(Cfg):
         if is_not_none(value):
             self.append(value)
 
+
 class List(Cfg):
     
     @force_type
@@ -81,6 +82,7 @@ class List(Cfg):
         if is_not_none(operation):
             self.set('xc:operation', operation.value)
 
+
 class Lists(Cfg):
     
     @force_type
@@ -94,6 +96,7 @@ class Lists(Cfg):
 
         if is_not_none(list_):
             self.append(list_)
+
 
 class Server(Cfg):
     
@@ -120,6 +123,7 @@ class Server(Cfg):
         if is_not_none(operation):
             self.set('xc:operation', operation.value)
 
+
 class Servers(Cfg):
 
     def __init__(self):
@@ -132,6 +136,7 @@ class Servers(Cfg):
 
         if is_not_none(value):
             self.append(value)
+
 
 class IPV6Host(Cfg):
     
@@ -172,6 +177,7 @@ class IPV6Host(Cfg):
         if is_not_none(operation):
             address_.set('xc:operation', operation.value)
 
+
 class  IPV6Hosts(Cfg):
 
     def __init__(self):
@@ -184,6 +190,7 @@ class  IPV6Hosts(Cfg):
         
         if is_not_none(value):
             self.append(value)
+
 
 class VRF(Cfg):
     
@@ -279,7 +286,8 @@ class VRF(Cfg):
         
         if is_not_none(operation):
             name_.set('xc:operation', operation.value)
-            
+
+
 class VRFS(Cfg):
 
     def __init__(self):
@@ -292,6 +300,7 @@ class VRFS(Cfg):
         
         if is_not_none(value):
             self.append(value)
+
 
 class IPDomainCfg(Cfg):
     

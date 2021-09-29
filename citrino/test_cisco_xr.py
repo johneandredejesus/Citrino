@@ -127,7 +127,13 @@ from cisco.xr.resources.ip_domain_cfg import (IPDomainCfg,
                                           List,
                                           IPV4Hosts,
                                           IPV4Host)
-
+from cisco.xr.resources.ip_domain_oper import (IPDomainOper, 
+                                              VRFS as VRFSOper,
+                                              VRF as VRFOper,
+                                              Server as ServerOper,
+                                              Hosts,
+                                              Host)
+from cisco.xr.resources.system_monitoring_oper import SystemMonitoringOper, CPUUtilization
 class CiscoXRTest(TestCase):
 
     """Tested on cisco IOS XR version 6.4.1."""
@@ -135,8 +141,7 @@ class CiscoXRTest(TestCase):
     def setUp(self):
         # Device credentials bellow. Put on  your device credentials inside.
         
-        self.__citrino = Citrino()
-        self.__citrino.connect(username=Credential.username,
+        self.__citrino = Citrino(username=Credential.username,
                                password=Credential.password,
                                host=Credential.host,
                                port=Credential.port,
@@ -667,7 +672,25 @@ class CiscoXRTest(TestCase):
         cfg = IPDomainCfg()
         
         self.assertRaises(Exception, self.__citrino.contract().get_cfg(cfg))
+    
+    def test_get_ip_domain_oper(self):
+        
+        hosts = Hosts()
+        hosts.host(Host('test'))
+        vrf = VRFOper('default', server=ServerOper(), hosts=hosts)
+        vrfs = VRFSOper()
+        vrfs.vrf(vrf)
+        oper =  IPDomainOper(vrfs) 
+        self.assertRaises(Exception, self.__citrino.contract().get_oper(oper))
+    
+    def test_get_system_monitoring_oper(self):
 
+        oper = SystemMonitoringOper()
+        cpu_utilization = CPUUtilization('0/RP0/CPU0')
 
+        oper.cpu_utilization(cpu_utilization)
+        
+        self.assertRaises(Exception, self.__citrino.contract().get_oper(oper))
+       
 if __name__ == '__main__':
     main()
